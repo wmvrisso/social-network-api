@@ -1,4 +1,5 @@
 const { model, Schema } = require("mongoose");
+const reactionSchema = require("./Reaction"); // Adjust the path as needed
 
 const thoughtSchema = new Schema(
   {
@@ -17,12 +18,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Reaction",
-      },
-    ],
+    reactions: [reactionSchema], // Embedded subdocuments
   },
   {
     toJSON: {
@@ -33,12 +29,11 @@ const thoughtSchema = new Schema(
   }
 );
 
-// Virtuals
-// Get length of thought's reactions array field on query
+// Virtual: Get length of thought's reactions array field on query
 thoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
 const Thought = model("Thought", thoughtSchema);
 
-module.exports = Thought; // Export the Thought model
+module.exports = Thought;
