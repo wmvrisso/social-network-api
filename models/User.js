@@ -15,8 +15,18 @@ const userSchema = new Schema(
       match: [/.+\@.+\..+/, "Please fill a valid email address"],
       // test@mail.com
     },
-    thoughts: [], // array of _id values referencing the Thought model
-    friends: [], // array of _id values referencing the User model (self-reference)
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
+      },
+    ], // array of _id values referencing the Thought model
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ], // array of _id values referencing the User model (self-reference)
   },
   {
     toJSON: {
