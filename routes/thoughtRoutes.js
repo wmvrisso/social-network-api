@@ -92,4 +92,66 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Route to create a new reaction
+router.post("/:thoughtId/reactions", async (req, res) => {
+  try {
+    const thoughtId = req.params.thoughtId;
+    const { reactionBody, username } = req.body;
+
+    const thought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      {
+        $push: {
+          reactions: { reactionBody, username },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    // // Create a new reaction
+    // const newReaction = await Reaction.create({
+    //   reactionBody,
+    //   username,
+    //   thoughtId
+    // });
+
+    res.status(201).json(thought);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Route to delete a reaction by ID
+router.delete("/:thoughtId/reactions", async (req, res) => {
+  try {
+    const thoughtId = req.params.thoughtId;
+    const { reactionId } = req.body;
+
+    // // Find and delete the reaction
+    // const deletedReaction = await Reaction.findByIdAndDelete(reactionId);
+
+    // if (!deletedReaction) {
+    //   return res.status(404).json({ message: "Reaction not found" });
+    // }
+
+    const thought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      {
+        $pull: {
+          reactions: { reactionId },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    res.json({ message: "Reaction deleted successfully" });
+  } catch (error) {
+    // Handle invalid ObjectId error
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ message: "Reaction not found" });
+    }
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
