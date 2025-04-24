@@ -10,7 +10,7 @@ The following code demonstrates the testing of an API for a social network web a
 
 ## Usage
 
-URL for video instruction: https://app.screencastify.com/v3/watch/jTDcaRprLtVtOKoEfUTX
+URL for video instruction: https://drive.google.com/file/d/1rNCndblWV4znR1cRRaXV7mISb8SZFWzW/view
 
 ## Contributing
 
